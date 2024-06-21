@@ -5,4 +5,6 @@ A small Go program for taking PDF files and parsing out structured data using a 
 - `pdf-service` is a Python microservice that exposes an endpoint for reading PDF files
 
 ### Run 
-`docker-compose up --build` 
+- `docker-compose up --build` 
+- `npm install && npm run dev` in `web`
+

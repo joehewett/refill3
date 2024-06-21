@@ -11,7 +11,7 @@ function splitKeys(keys: string) {
 
 export default function Example() {
   // const prodAPI = "https://gin-production-0e58.up.railway.app/refill";
-  const devAPI = "http://localhost:8081/refill";
+  const devAPI = "http://localhost:8080/refill";
 
   const [response, setResponse] = useState("");
   const [dataInput, setDataInput] = useState("");
