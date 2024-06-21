@@ -2,14 +2,14 @@
 version: '3.7'
 
 services:
-  refill-railway:
-    build: ./refill-railway
+  backend:
+    build: ./backend
     ports:
       - "8080:8080"
     depends_on:
-      - refill-pdf
+      - pdf-service 
 
-  refill-pdf:
-    build: ./refill-pdf
+  pdf-service:
+    build: ./pdf-service
     ports:
       - "5001:5001"
