@@ -1,0 +1,15 @@
+# docker-compose.yml
+version: '3.7'
+
+services:
+  refill-railway:
+    build: ./refill-railway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - refill-pdf
+
+  refill-pdf:
+    build: ./refill-pdf
+    ports:
+      - "5001:5001"
