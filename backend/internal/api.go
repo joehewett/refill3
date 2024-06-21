@@ -245,5 +245,7 @@ func pdf2text(path string) (string, error) {
 		return "", fmt.Errorf("failed to read response body: %w", err)
 	}
 
+	fmt.Printf("Body is: %s", string(body))
 	return string(body), nil
+
 }

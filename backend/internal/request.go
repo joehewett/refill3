@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/sashabaranov/go-openai"
@@ -95,22 +96,20 @@ func createChatCompletion(messages []openai.ChatCompletionMessage, openAIKey str
 		return "", fmt.Errorf("OPENAI_API_KEY is not set")
 	}
 
-	// client := openai.NewClient(openAIKey)
+	client := openai.NewClient(openAIKey)
 
-	// response, err := client.CreateChatCompletion(
-	// 	context.Background(),
-	// 	openai.ChatCompletionRequest{
-	// 		Model:    model,
-	// 		Messages: messages,
-	// 	},
-	// )
-	// if err != nil {
-	// 	return "", fmt.Errorf("failed to create chat completion: %w", err)
-	// }
+	response, err := client.CreateChatCompletion(
+		context.Background(),
+		openai.ChatCompletionRequest{
+			Model:    model,
+			Messages: messages,
+		},
+	)
+	if err != nil {
+		return "", fmt.Errorf("failed to create chat completion: %w", err)
+	}
 
-	// completion := response.Choices[0].Message.Content
-
-	completion := "test"
+	completion := response.Choices[0].Message.Content
 
 	return completion, nil
 }

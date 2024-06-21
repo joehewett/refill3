@@ -2,10 +2,7 @@ module github.com/joehewett/refill
 
 go 1.20
 
-require (
-	github.com/dslipak/pdf v0.0.2
-	github.com/sashabaranov/go-openai v1.26.0
-)
+require github.com/sashabaranov/go-openai v1.26.0
 
 require (
 	github.com/bytedance/sonic v1.10.1 // indirect
