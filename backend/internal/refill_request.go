@@ -79,11 +79,10 @@ func fill(file File, jsonStr string, instructions string, openAIKey string, ch c
 	var resultJSON map[string]interface{}
 	err = json.Unmarshal([]byte(result), &resultJSON)
 	if err != nil {
-		ch <- fmt.Sprintf("\nFailed to unmarshal result for file %s: %s\n", file, err)
+		ch <- fmt.Sprintf("\nFailed to unmarshal result for file. Result was: %s: %w\n", result, err)
 		return
 	}
 
-	// resultJSON["filename"] = "file.Name()"
 	bytes, err := json.MarshalIndent(resultJSON, "", "\t")
 	if err != nil {
 		ch <- fmt.Sprintf("\nFailed to marshal result for file %s: %s\n", file, err)
@@ -92,7 +91,7 @@ func fill(file File, jsonStr string, instructions string, openAIKey string, ch c
 
 	ch <- string(bytes)
 
-	fmt.Printf("Time taken for file %s: %s\n", file, time.Since(startTime))
+	fmt.Printf("Time taken for file %s\n", time.Since(startTime))
 }
 
 // getAdminKey returns the OpenAI API key if the given key is the admin key.

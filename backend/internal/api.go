@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -21,7 +22,7 @@ type APIServer struct {
 	engine *gin.Engine
 }
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024
+const MAX_FILE_SIZE = 20 * 1024 * 1024
 
 type apiFunc func(w http.ResponseWriter, r *http.Request) error
 
@@ -78,8 +79,6 @@ func (s *APIServer) handleRefill(w http.ResponseWriter, r *http.Request) error {
 	var refillRequest RefillRequest
 	var parsedFiles []File
 
-	fmt.Printf("Body is %#v\n", r.Body)
-
 	r.Body = http.MaxBytesReader(w, r.Body, MAX_FILE_SIZE)
 	if err := r.ParseMultipartForm(MAX_FILE_SIZE); err != nil {
 		return fmt.Errorf("failed to parse multipart form: %s", err)
@@ -101,8 +100,6 @@ func (s *APIServer) handleRefill(w http.ResponseWriter, r *http.Request) error {
 		if err != nil {
 			return fmt.Errorf("failed to open file: %s", err)
 		}
-		fmt.Printf("fileHeader is %#v\n", fileHeader)
-
 		defer file.Close()
 
 		buff := make([]byte, 512)
@@ -162,8 +159,11 @@ func (s *APIServer) handleRefill(w http.ResponseWriter, r *http.Request) error {
 		parsedFiles = append(parsedFiles, newFile)
 	}
 
+	keys := r.MultipartForm.Value["keys"]
+	k := strings.Split(keys[0], ",")
+
 	refillRequest = RefillRequest{
-		Keys:         r.MultipartForm.Value["keys"],
+		Keys:         k,
 		Files:        parsedFiles,
 		Instructions: r.MultipartForm.Value["instructions"][0],
 		OpenAIKey:    r.MultipartForm.Value["openai_api_key"][0],
@@ -182,22 +182,6 @@ func (s *APIServer) handleRefill(w http.ResponseWriter, r *http.Request) error {
 
 	return nil
 }
-
-// func parsePDF(path string) (string, error) {
-// 	r, err := pdf.Open(path)
-// 	if err != nil {
-// 		return "", fmt.Errorf("failed to open PDF: %w", err)
-// 	}
-
-// 	text, err := r.GetPlainText()
-// 	if err != nil {
-// 		return "", fmt.Errorf("failed to get text content: %w", err)
-// 	}
-
-// 	var buf bytes.Buffer
-// 	buf.ReadFrom(text)
-// 	return buf.String(), nil
-// }
 
 func (s *APIServer) healthCheck(w http.ResponseWriter, r *http.Request) error {
 	return WriteJSON(w, http.StatusOK, "Get your jiffies out Thomas")

@@ -11,6 +11,8 @@ RUN go mod download
 # https://docs.docker.com/reference/dockerfile/#copy
 COPY . ./
 
+
+
 # Build
 RUN CGO_ENABLED=0 GOOS=linux go build -o /main
 
@@ -19,7 +21,11 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /main
 # But we can document in the Dockerfile what ports
 # the application is going to listen on by default.
 # https://docs.docker.com/reference/dockerfile/#expose
-EXPOSE 8080
+EXPOSE 8090
+
+ENV PORT=8090
+
+
 
 # Run
 CMD ["/main"]
