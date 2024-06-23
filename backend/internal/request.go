@@ -12,6 +12,7 @@ var (
 		You are a parser of unstructured text data. Your task is to return JSON in the format specified, 
 		where each JSON value is filled in using information provided in the data.
 		If the data does not contain the information required, return an empty string for that value.
+		Return your answer in JSON format, but do not wrap it in backticks.		
 
 	`
 
